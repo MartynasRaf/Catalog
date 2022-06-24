@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using Catalog.Api.Controllers;
 using Catalog.Api.Dtos;
 using Catalog.Api.Entities;
@@ -51,7 +53,7 @@ namespace Catalog.UnitTests
         }
 
         [Fact]
-        public async void GetItemsAsync_ExistingItems_ReturnsAllItems()
+        public async void GetItemsAsync_WithExistingItems_ReturnsAllItems()
         {
             // Arrange
             var expectedItems = new[] { CreateRandomItem(), CreateRandomItem(), CreateRandomItem() };
@@ -63,6 +65,33 @@ namespace Catalog.UnitTests
             var actualItems = await controller.GetItemsAsync();
             // Assert
             actualItems.Should().BeEquivalentTo(expectedItems);
+        }
+
+        [Fact]
+        public async void GetItemsAsync_WithMatchingItems_ReturnsMatchingItems()
+        {
+            // Arrange
+            var allItems = new[]
+                {
+                new Item(){Name="Potion"},
+                new Item(){Name="Antidote"},
+                new Item(){Name="Hi-Potion"},
+                };
+
+            var nameToMatch = "Potion";
+
+            repositoryStub.Setup(repo => repo.GetItemsAsync())
+            .ReturnsAsync(allItems);
+
+            var controller = new ItemsController(repositoryStub.Object);
+            // Act
+
+            IEnumerable<ItemDto> foundItems = await controller.GetItemsAsync(nameToMatch);
+            
+            // Assert
+            foundItems.Should().OnlyContain(
+                item => item.Name == allItems[0].Name || item.Name == allItems[2].Name
+            );
         }
 
         [Fact]
