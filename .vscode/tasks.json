@@ -7,19 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/Catalog.csproj",
-                "/property:GenerateFullPaths=true",
-                "/consoleloggerparameters:NoSummary"
-            ],
-            "problemMatcher": "$msCompile"
-        },
-        {
-            "label": "publish",
-            "command": "dotnet",
-            "type": "process",
-            "args": [
-                "publish",
-                "${workspaceFolder}/Catalog.csproj",
+                "${workspaceFolder}/build.proj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -30,6 +18,19 @@
             },
         },
         {
+            "label": "publish",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "publish",
+                "${workspaceFolder}/Catalog.Api//Catalog.Api.csproj",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary"
+            ],
+            "problemMatcher": "$msCompile",
+            
+        },
+        {
             "label": "watch",
             "command": "dotnet",
             "type": "process",
@@ -37,7 +38,7 @@
                 "watch",
                 "run",
                 "--project",
-                "${workspaceFolder}/Catalog.csproj"
+                "${workspaceFolder}/Catalog.Api//Catalog.Api.csproj"
             ],
             "problemMatcher": "$msCompile"
         }
